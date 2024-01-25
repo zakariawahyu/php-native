@@ -31,6 +31,26 @@ class TransactionModel {
         }
     }
 
+    public function getTransactionByID($referenceID)
+    {
+        $query = "
+            SELECT
+                id, status
+            FROM
+                transactions
+            WHERE id = ?;
+        ";
+
+        try {
+            $statement = $this->db->prepare($query);
+            $statement->execute(array($referenceID));
+            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $result;
+        } catch (\PDOException $e) {
+            exit($e->getMessage());
+        }
+    }
+
     public function getMerchant($merchantID)
     {
         $query = "
@@ -73,6 +93,29 @@ class TransactionModel {
             return $result;
         } catch (\PDOException $e) {
             exit($e->getMessage());
+        }
+    }
+
+    public function updateTransaction($referencesID, $status)
+    {
+        $query = "
+        UPDATE transactions
+        SET
+            status = ?
+        WHERE
+            id = ?
+        ";
+
+        $statement = $this->db->prepare($query);
+        $statement->bindParam(1, $status);
+        $statement->bindParam(2, $referencesID);
+
+        try {
+            $statement->execute();
+            return true;
+        } catch (\PDOException $e) {
+            exit($e->getMessage());
+            return false;
         }
     }
 }

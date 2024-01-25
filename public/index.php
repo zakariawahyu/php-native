@@ -30,5 +30,5 @@ if (isset($uri[3])) {
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-$controller = new TransactionController($dbConnection, $requestMethod, $referenceID, $merchantID);
+$controller = new TransactionController($dbConnection, $requestMethod, $referenceID, $merchantID, '');
 $controller->routes();

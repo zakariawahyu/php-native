@@ -10,13 +10,15 @@ class TransactionController {
     private $model;
     private $referenceID;
     private $merchantID;
+    private $status;
 
-    public function __construct($db, $requestMethod, $referenceID, $merchantID)
+    public function __construct($db, $requestMethod, $referenceID, $merchantID, $status)
     {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
         $this->referenceID = $referenceID;
         $this->merchantID = $merchantID;
+        $this->status = $status;
 
         $this->model = new TransactionModel($db);
     }
@@ -38,6 +40,9 @@ class TransactionController {
                 } else {
                     $this->routeNotFound();
                 };
+                break;
+            case 'PUT':
+                $this->updateTransaction($this->referenceID, $this->status);
                 break;
             default:
                 $this->routeNotFound();
@@ -103,6 +108,22 @@ class TransactionController {
             "success" => "true",
             "code" => 200,
             "data" => $result,
+        );
+
+        http_response_code(200);
+        echo json_encode($res);
+    }
+
+    private function updateTransaction($referenceID, $status) {
+        $transaction = $this->model->getTransactionByID($referenceID);
+        if (!$transaction) {
+            return $this->responseError(404, 'transaction not found');
+        }
+
+        $this->model->updateTransaction($referenceID, $status);
+        $res = array(
+            "success" => "true",
+            "code" => 200,
         );
 
         http_response_code(200);
