@@ -1,0 +1,24 @@
+{
+    "name": "zakariawahyu/php-native",
+    "description": "an exaple simple php native",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+      {
+        "name": "zakariawahyu",
+        "email": "zakarianur6@gmail.com"
+      }
+    ],
+    "require": {
+        "robmorgan/phinx": "^0.16.0",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+  }
